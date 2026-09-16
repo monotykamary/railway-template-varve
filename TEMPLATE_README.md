@@ -26,7 +26,7 @@ A local acknowledgment is **not an S3 acknowledgment**. Do not deploy irreplacea
 
 ### Implementation Details
 
-Pinned release: **Varve v0.1.0 — `f8dae37983c6`**. The source revision and archive SHA-256 are pinned in the wrapper's `VERSION.json` and Dockerfile. Rust and runtime base images use digest pins; the upstream installer pins DuckDB v2 alpha by commit and checksum. This is the explicitly experimental Varve/DuckDB-alpha edition, not a stable-production template.
+Pinned release: **Varve v0.1.0 — `45d7c014ea90`**. The source revision and archive SHA-256 are pinned in the wrapper's `VERSION.json` and Dockerfile. Rust and runtime base images use digest pins; the upstream installer pins DuckDB v2 alpha by commit and checksum. This is the explicitly experimental Varve/DuckDB-alpha edition, not a stable-production template.
 
 The database runs as UID/GID 10001 after volume initialization. The volume stores local WAL and Parquet; scheduled publication protects immutable data and recovery state in the bucket. Daily volume backups are configured. Service/bucket secrets are generated or referenced, never copied from validation.
 
