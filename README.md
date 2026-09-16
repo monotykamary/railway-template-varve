@@ -2,7 +2,7 @@
 
 **Time settles into layers.** A pinned deployment of the experimental [Varve](https://github.com/monotykamary/varve) Rust time-series database, with a persistent volume and a Railway S3-compatible bucket.
 
-The deploy button is added only after the live template and its public route have been verified.
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/varve)
 
 ## What you get
 
@@ -31,7 +31,7 @@ Updating the wrapper does not silently update Varve. A version change requires a
 3. Connect a client to `wss://<service-domain>/v1/ws`, or use the authenticated HTTPS API. Create a table explicitly, then write rows or atomic batches.
 4. Follow [batching](https://github.com/monotykamary/varve/blob/main/docs/BATCHING.md), [client protocol](https://github.com/monotykamary/varve/blob/main/docs/CLIENT_PROTOCOL.md) and [operations](https://github.com/monotykamary/varve/blob/main/docs/OPERATIONS.md).
 
-Browser clients require an explicit allowed-origin configuration. Non-browser clients omit Origin. Tokens never belong in WebSocket URLs. The template does not automatically create a user table or enable destructive retention policies.
+Browser clients require exact origins in `VARVE_WS_ORIGINS` and are for trusted operator frontends; never publish the operator token in a public app. Non-browser clients omit Origin. Tokens never belong in WebSocket URLs. The template does not automatically create a user table or enable destructive retention policies.
 
 ## Configuration and safety
 
@@ -43,7 +43,7 @@ This is an **experimental database and DuckDB-alpha dependency**, not a producti
 
 ## Validation
 
-See `VALIDATION.md` for the exact tested source, live deployment, protocol/auth/batch/recovery checks, delayed observations and cleanup outcome. Validation resources belong only to the Tom workspace; no permanent demo is attached.
+See [`VALIDATION.md`](VALIDATION.md) for the exact tested source, live deployment, protocol/auth/batch/recovery checks, delayed observations and cleanup outcome. The published topology is reproducible in [`template.json`](template.json); run `node scripts/check-pins.mjs` and `node scripts/check-template.mjs` to check it. Validation resources belong only to the Tom workspace; no permanent demo is attached.
 
 ## License and attribution
 

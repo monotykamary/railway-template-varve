@@ -1,0 +1,42 @@
+{
+  "buckets": {
+    "c614423a-fa77-4c2d-9d19-e61f0d747514": {"name": "objects"}
+  },
+  "services": {
+    "e4bdbf9f-873a-4cbd-9f15-f4c09072bf01": {
+      "name": "varve",
+      "icon": "https://raw.githubusercontent.com/monotykamary/varve/45d7c014ea9070e6a2f299a752c121c748434762/media/icon.png",
+      "source": {"repo": "https://github.com/monotykamary/railway-template-varve", "rootDirectory": "/"},
+      "deploy": {
+        "startCommand": null,
+        "healthcheckPath": "/ready",
+        "healthcheckTimeout": 120,
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 3,
+        "numReplicas": 1,
+        "sleepApplication": false,
+        "overlapSeconds": 0,
+        "drainingSeconds": 20
+      },
+      "networking": {"serviceDomains": {"<hasDomain>:8080": {"port": 8080}}},
+      "volumeMounts": {
+        "e4bdbf9f-873a-4cbd-9f15-f4c09072bf01": {"mountPath": "/data", "backupSchedules": ["DAILY"]}
+      },
+      "variables": {
+        "PORT": {"isOptional": false, "description": "Service port. Keep 8080 to match the public domain target.", "defaultValue": "8080"},
+        "VARVE_API_TOKEN": {"isOptional": false, "description": "Generated operator token for HTTPS and WebSocket clients. Grants database-wide access; keep private.", "defaultValue": "${{ secret(64, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\") }}"},
+        "VARVE_DATA_DIR": {"isOptional": false, "description": "Database directory on the persistent volume. Keep /data/varve.", "defaultValue": "/data/varve"},
+        "VARVE_REQUIRE_VOLUME": {"isOptional": false, "description": "Keep 1 to refuse startup without a mounted /data volume.", "defaultValue": "1"},
+        "VARVE_HTTP_REQUEST_QUEUE": {"isOptional": false, "description": "Bounded shared application request admission capacity.", "defaultValue": "64"},
+        "VARVE_WS_ORIGINS": {"isOptional": true, "description": "Optional comma-separated exact browser origins, such as https://app.example.com. Empty rejects browser origins; no wildcard.", "defaultValue": ""},
+        "VARVE_USE_S3": {"isOptional": false, "description": "Keep true to publish asynchronous recovery state to the dedicated bucket.", "defaultValue": "true"},
+        "VARVE_S3_BUCKET": {"isOptional": false, "description": "Dedicated bucket name from the objects resource. Preserve this reference.", "defaultValue": "${{objects.BUCKET}}"},
+        "VARVE_S3_ENDPOINT": {"isOptional": false, "description": "S3-compatible endpoint supplied by the objects resource.", "defaultValue": "${{objects.ENDPOINT}}"},
+        "VARVE_S3_REGION": {"isOptional": false, "description": "Signing region for Railway object storage; keep auto.", "defaultValue": "auto"},
+        "VARVE_S3_PREFIX": {"isOptional": false, "description": "Single-writer recovery namespace within the dedicated bucket. Do not share with another active database.", "defaultValue": "varve"},
+        "AWS_ACCESS_KEY_ID": {"isOptional": false, "description": "Bucket-generated access key reference; do not copy validation credentials.", "defaultValue": "${{objects.ACCESS_KEY_ID}}"},
+        "AWS_SECRET_ACCESS_KEY": {"isOptional": false, "description": "Bucket-generated secret key reference; preserve the reference and keep private.", "defaultValue": "${{objects.SECRET_ACCESS_KEY}}"}
+      }
+    }
+  }
+}

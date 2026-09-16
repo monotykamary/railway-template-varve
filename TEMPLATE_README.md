@@ -6,6 +6,8 @@ Time settles into layers. Varve is an experimental Rust time-series database wit
 
 This template deploys one Varve service, one persistent `/data` volume and a dedicated `objects` bucket. The service owns the public HTTPS domain and WebSocket endpoint at `/v1/ws`. It generates an operator API token; there is no default username/password or web administration console. Obtain the token from `VARVE_API_TOKEN` in the service variables, then create a table using a client or the operator API.
 
+`/health` is liveness. `/ready` is a nonblocking storage-state check and may briefly return 503 during normal mutex contention; clients should use bounded readiness acquisition, not treat every busy sample as a crash. Browser clients require exact origins in `VARVE_WS_ORIGINS` and are for trusted operator frontends—never embed the operator token in a public app.
+
 A local acknowledgment is **not an S3 acknowledgment**. Do not deploy irreplaceable data without independent backups and a tested restore plan. No automatic failover or multi-replica database ownership is implemented.
 
 ## Common Use Cases
