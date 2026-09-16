@@ -12,8 +12,8 @@ Verified 2026-09-16 in **Tom**, workspace `18857f84-0af6-4379-9217-e62e2d14b48f`
 | Real S3 | Isolated 256-row provider probe: immutable/conditional writes, stale CAS, token freshness, paging/deletion, fsync, Parquet, archive, SQL, named rollup, restore, raw/derived retention and vacuum | passed |
 | Soak/redeploy | 121.010s / 12 samples before and 121.906s / 12 samples after redeploy; all 37 rows, rollups and HTTP duplicate receipt retained; local/checkpoint/remote sequence 6; 2 segments | passed |
 | Safe template | Exact config readback, generated token, bucket references, 13 described variables, daily backup schedule, one replica, no validation secrets, `demoProjectId: null` | passed |
-| Public route | [Varve](https://railway.com/deploy/varve), template `d38051a6-00ca-4156-93de-383be81a2af3`, creator Tom, source/version/topology/card verified in a background browser target | passed; remote button verification follows push |
-| Cleanup | Release-owned project deletion and deployment/domain readback | pending final cleanup |
+| Public route | [Varve](https://railway.com/deploy/varve), template `d38051a6-00ca-4156-93de-383be81a2af3`, creator Tom, source/version/topology/card verified in a background browser target | passed, including the pushed GitHub button followed in the browser |
+| Cleanup | Deletion recorded at `2026-09-16T05:37:56.169Z`; service/project lookups no longer resolve; former domain returns `404 Application not found`; template remains published without a demo | passed, retained deletion record |
 
 ## Exact live identity
 
@@ -35,6 +35,12 @@ The first raw bucket definition had no production instance, so its references re
 `Database::is_ready` intentionally uses `try_lock`. The first strict soak attempt saw a 1ms upstream `503 {"ready":false}` during mutex contention, not an edge failure or crash. The corrected oracle counts and bounds that documented condition, requires live `/health`, eventual readiness, exact SQL data and no fencing/maintenance error. The successful initial window recorded one busy response, with maximum readiness acquisition 513ms; the post-redeploy window recorded zero. This is not a zero-error-rate or throughput/SLO claim.
 
 The public page rendered in Railway's dark theme. A light media preference did not change the page's explicit `dark` theme, so no separate light-theme page verification is claimed. The source icon's transparent bounds and contrast were checked separately.
+
+## Cleanup readback
+
+The complete Tom template inventory contained no demo attachment to the validation project. Deletion was accepted only after the rendered route and pushed GitHub button were verified. The `includeDeleted: true` workspace listing records `deletedAt: 2026-09-16T05:37:56.169Z`; ordinary project, service and deployment queries now return `Project not found`. The former domain returns `404 Application not found`. The template remains `PUBLISHED` in Tom with `demoProjectId: null`.
+
+This API exposes a deletion timestamp, not the future purge deadline described by older CLI guidance. No exact purge deadline or fabricated `REMOVED` deployment state is claimed. The bucket and volume are associated with the deleted project and may remain recoverable until provider purge. No local container runtime was used or pruned.
 
 ## Tooling and safety
 
