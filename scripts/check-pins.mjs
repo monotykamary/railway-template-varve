@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const version=JSON.parse(fs.readFileSync(root+'VERSION.json','utf8'));
+const docker=fs.readFileSync(root+'Dockerfile','utf8');
+const config=JSON.parse(fs.readFileSync(root+'railway.json','utf8'));
+assert.match(version.commit,/^[a-f0-9]{40}$/);
+assert.match(version.source_sha256,/^[a-f0-9]{64}$/);
+assert.equal(version.source_archive,`https://codeload.github.com/monotykamary/varve/tar.gz/${version.commit}`);
+assert(docker.includes('ARG VARVE_COMMIT='+version.commit));
+assert(docker.includes('ARG VARVE_SOURCE_SHA256='+version.source_sha256));
+for(const image of [version.rust_image,version.runtime_image]) {assert.match(image,/@sha256:[a-f0-9]{64}$/);assert(docker.includes('FROM '+image));}
+assert(docker.includes('sha256sum -c -'));
+assert(docker.includes('--locked --release'));
+assert(docker.includes('COPY --from=build /src/scripts/container-entrypoint.sh'));
+assert(docker.includes('COPY --from=build /src/config/railway.json'));
+assert(!docker.includes(':latest'));
+assert.equal(config.deploy.healthcheckPath,'/ready');
+assert.equal(config.deploy.numReplicas,1);
+assert(config.deploy.healthcheckTimeout>=120);
+assert(fs.readFileSync(root+'TEMPLATE_README.md','utf8').includes(version.commit.slice(0,12)));
+console.log(JSON.stringify({ok:true,commit:version.commit,platforms:version.platforms,sourceChecksumRequired:true,healthcheck:config.deploy.healthcheckPath,replicas:1}));

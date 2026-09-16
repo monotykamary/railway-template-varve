@@ -1,0 +1,15 @@
+{
+  "product": "Varve",
+  "version": "0.1.0",
+  "status": "experimental",
+  "repository": "https://github.com/monotykamary/varve",
+  "commit": "f8dae37983c63f6ad5217445b12f4eb51ccc9f64",
+  "source_archive": "https://codeload.github.com/monotykamary/varve/tar.gz/f8dae37983c63f6ad5217445b12f4eb51ccc9f64",
+  "source_sha256": "a14533ebf9adbb286d73b8f75f514251d4f53be67c0e6a16df1b49765f6eb848",
+  "rust_image": "rust:1.98.1-slim-bookworm@sha256:ebd900bae66fd508b466cef82d64a83a5fb34682e4c8b2797a42908bddc95a57",
+  "runtime_image": "debian:bookworm-slim@sha256:88200866dfff7ea7f5cbcb6ec7c8a701889efe6fe859fe64d6990e4b07ea4171",
+  "duckdb_version": "v2.0.0-alpha41533",
+  "duckdb_commit": "10de957379",
+  "platforms": ["linux/amd64"],
+  "license": "Apache-2.0"
+}
