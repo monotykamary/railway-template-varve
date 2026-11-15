@@ -1,7 +1,7 @@
 ARG VARVE_COMMIT=45d7c014ea9070e6a2f299a752c121c748434762
 ARG VARVE_SOURCE_SHA256=05d2432253724e9c53a070a66f2fdd928af3927241fb0a4fc439690e3e3eee5c
 
-FROM rust:1.98.1-slim-bookworm@sha256:ebd900bae66fd508b466cef82d64a83a5fb34682e4c8b2797a42908bddc95a57 AS build
+FROM rust:1.100.0-slim-bookworm@sha256:7c7d4eb4d05b7781187a327809466cfddf29753f6defdc3d19a0e291951b7a37 AS build
 ARG VARVE_COMMIT
 ARG VARVE_SOURCE_SHA256
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential cmake pkg-config ca-certificates curl && rm -rf /var/lib/apt/lists/*
